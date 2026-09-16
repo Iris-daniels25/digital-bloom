@@ -1,5 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Digital Bloom favicon placeholder">
-  <rect width="64" height="64" rx="16" fill="#f8f4ed" />
-  <path d="M32 49c0-8.8 7.2-16 16-16-8.8 0-16-7.2-16-16 0 8.8-7.2 16-16 16 8.8 0 16 7.2 16 16Z" fill="#20412f" />
-  <circle cx="32" cy="33" r="4.5" fill="#8b6b95" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Digital Bloom flower mark">
+  <rect width="64" height="64" rx="12" fill="#17101d" />
+  <g fill="#f9b8c0" stroke="#e83e5b" stroke-width="1.5">
+    <ellipse cx="32" cy="19" rx="9" ry="13" />
+    <ellipse cx="45" cy="28" rx="13" ry="9" transform="rotate(72 45 28)" />
+    <ellipse cx="40" cy="44" rx="9" ry="13" transform="rotate(144 40 44)" />
+    <ellipse cx="24" cy="44" rx="9" ry="13" transform="rotate(216 24 44)" />
+    <ellipse cx="19" cy="28" rx="13" ry="9" transform="rotate(288 19 28)" />
+  </g>
+  <circle cx="32" cy="32" r="6" fill="#e83e5b" />
 </svg>

@@ -1,18 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&family=Kaushan+Script&display=swap');
+
 :root {
-  --color-cream: #f8f4ed;
-  --color-forest: #20412f;
-  --color-forest-deep: #173023;
-  --color-forest-muted: #4d6d5b;
-  --color-charcoal: #2d2b31;
-  --color-text: #37343c;
-  --color-text-muted: #5f5968;
-  --color-border: #d8d2c8;
-  --color-card: #fffcf7;
-  --color-card-emphasis: #f3ece4;
-  --color-accent-soft: #c7b2d4;
-  --shadow-soft: 0 12px 22px -20px rgba(28, 41, 34, 0.75);
-  --font-heading: 'Fraunces', 'Cormorant Garamond', 'Georgia', serif;
-  --font-body: 'Inter', 'Avenir Next', 'Segoe UI', sans-serif;
+  --color-cream: #f4f4f2;
+  --color-forest: #17181b;
+  --color-forest-deep: #08090b;
+  --color-forest-muted: #a2a5aa;
+  --color-charcoal: #f4f4f2;
+  --color-text: #f4f4f2;
+  --color-text-muted: #b4b7bc;
+  --color-border: #36383d;
+  --color-card-emphasis: #202226;
+  --color-accent-soft: #f9b8c0;
+  --color-accent: #e83e5b;
+  --font-body: 'Instrument Sans', 'Avenir Next', 'Segoe UI', sans-serif;
 }
 
 * {
@@ -28,31 +28,40 @@ body {
   min-height: 100vh;
   font-family: var(--font-body);
   color: var(--color-text);
-  background: radial-gradient(circle at top right, #ffffff, var(--color-cream) 45%);
+  background: var(--color-forest-deep);
   line-height: 1.65;
 }
 
 h1,
 h2,
 h3 {
-  font-family: var(--font-heading);
-  line-height: 1.2;
+  font-family: var(--font-body);
+  font-weight: 650;
+  line-height: 1.05;
   color: var(--color-charcoal);
 }
 
 h1 {
   margin: 0.6rem 0 1rem;
   font-size: clamp(2rem, 6vw, 3.6rem);
+  font-weight: 700;
+}
+
+::selection {
+  background: var(--color-accent-soft);
+  color: var(--color-forest-deep);
 }
 
 h2 {
   margin: 0 0 0.9rem;
   font-size: clamp(1.5rem, 4vw, 2.4rem);
+  font-weight: 650;
 }
 
 h3 {
   margin: 0.25rem 0 0.8rem;
   font-size: 1.3rem;
+  font-weight: 600;
 }
 
 p {
