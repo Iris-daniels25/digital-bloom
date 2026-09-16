@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Digital Bloom placeholder favicon">
+  <circle cx="32" cy="32" r="30" fill="#fffdf7" stroke="#2f7f5f" stroke-width="4" />
+  <path d="M32 48V26" stroke="#2f7f5f" stroke-width="4" stroke-linecap="round" />
+  <path d="M32 30c8 0 14-6 14-14-8 0-14 6-14 14Z" fill="#87c79b" />
+  <path d="M32 34c-8 0-14-6-14-14 8 0 14 6 14 14Z" fill="#5ba977" />
+</svg>
