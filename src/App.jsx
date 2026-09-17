@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import './App.css'
+
+const beautyAiSurveyUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSe-Ii6gK3j3HmTPQMGPJdulPqDzzRxz7J7ktVuAgMYfuFDmBQ/viewform?usp=header'
 import heroImage from './assets/digital-bloom-hero.png'
 import skinsenseImage from './assets/skinsense-showcase.png'
 import shopBackground from './assets/shop-background-orbits.png'
@@ -8,7 +10,8 @@ import consultationImage from './assets/Beauty_Business_Tech_Consult.png'
 import websiteImage from './assets/One_Page_Website_Setup.png'
 import logoImage from './assets/digital-bloom-logo.png'
 
-const SKINSENSE_WAITLIST_ENDPOINT = import.meta.env.VITE_SKINSENSE_WAITLIST_ENDPOINT || ''
+const SIGNUP_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxKO5y6Y2-REKxyVwzBl93G5HQMDUmh58cRk7xj7oprcAUYWOh0aQQ8t7zWj9EDUdbA/exec'
+const SIGNUP_ERROR = 'Something went wrong. Please try again or email support@thedigitalbloom.co.'
 const legalPath = (pathname) => pathname === '/privacy' || pathname === '/terms' ? pathname.slice(1) : ''
 
 const privacySections = [
@@ -51,6 +54,7 @@ const termsSections = [
 const navLinks = [
   { href: '#what-we-do', label: 'What We Do' },
   { href: '#beauty', label: 'For Beauty Pros' },
+  { href: beautyAiSurveyUrl, label: 'Beauty + AI Survey', external: true },
   { href: '#shop', label: 'Shop' },
   { href: '#skinsense-waitlist', label: 'SkinSense Waitlist' },
   { href: '#community', label: 'Contact' },
@@ -231,23 +235,27 @@ function SkinSenseWaitlistPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
+    const form = event.currentTarget
+    if (form.elements.website.value) return
     setSubmitError('')
     setIsSubmitting(true)
 
     try {
-      if (SKINSENSE_WAITLIST_ENDPOINT) {
-        const formData = new FormData(event.currentTarget)
-        const response = await fetch(SKINSENSE_WAITLIST_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(Object.fromEntries(formData.entries())),
-        })
-        if (!response.ok) throw new Error('The waitlist service did not accept the signup.')
-      }
+      const formData = new FormData(form)
+      const payload = new URLSearchParams({
+        formType: 'skinsense',
+        firstName: formData.get('firstName'),
+        email: formData.get('email'),
+        interest: formData.get('interest') || '',
+        source: 'Digital Bloom Website',
+        consent: 'Yes',
+        website: formData.get('website') || '',
+      })
+      await fetch(SIGNUP_ENDPOINT, { method: 'POST', mode: 'no-cors', body: payload })
       setIsSubmitted(true)
-      event.currentTarget.reset()
-    } catch (error) {
-      setSubmitError(error.message)
+      form.reset()
+    } catch {
+      setSubmitError(SIGNUP_ERROR)
     } finally {
       setIsSubmitting(false)
     }
@@ -289,9 +297,14 @@ function SkinSenseWaitlistPage() {
                   <option>SkinSense updates</option>
                 </select>
               </div>
+              <label className="consent-checkbox">
+                <input type="checkbox" name="consentGiven" required />
+                <span>I agree to receive SkinSense updates, including product news, early-access opportunities, testing invitations, and launch announcements.</span>
+              </label>
+              <input className="honeypot" name="website" type="text" tabIndex="-1" autoComplete="off" aria-hidden="true" />
               {submitError ? <p className="skinsense-waitlist-error" role="alert">{submitError}</p> : null}
               <button className="button button-primary" type="submit" disabled={isSubmitting}>
-                {isSubmitting ? 'Joining the Waitlist…' : 'Join the SkinSense Waitlist'} <span aria-hidden="true">→</span>
+                {isSubmitting ? 'Submitting…' : 'Join the SkinSense Waitlist'} <span aria-hidden="true">→</span>
               </button>
             </form>
           )}
@@ -405,6 +418,11 @@ function Section({ id, title, intro, children, className = '' }) {
 
 function App() {
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isCommunitySubmitted, setIsCommunitySubmitted] = useState(false)
+  const [isCommunitySubmitting, setIsCommunitySubmitting] = useState(false)
+  const [communitySubmitError, setCommunitySubmitError] = useState('')
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const mobileMenuToggleRef = useRef(null)
   const [legalPage, setLegalPage] = useState(() => legalPath(window.location.pathname) || legalPath(new URLSearchParams(window.location.search).get('route') || ''))
   const [isShop, setIsShop] = useState(() => window.location.hash === '#shop')
   const [isSkinSenseWaitlist, setIsSkinSenseWaitlist] = useState(() => window.location.hash === '#skinsense-waitlist')
@@ -451,8 +469,51 @@ function App() {
     }
   }, [isShop, isSkinSenseWaitlist, legalPage])
 
+  useEffect(() => {
+    if (!isMobileMenuOpen) return undefined
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setIsMobileMenuOpen(false)
+        mobileMenuToggleRef.current?.focus()
+      }
+    }
+    document.body.style.overflow = 'hidden'
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.body.style.overflow = ''
+      document.removeEventListener('keydown', onKeyDown)
+    }
+  }, [isMobileMenuOpen])
+
   const homeLink = legalPage ? '/' : '#top'
   const sectionLink = (id) => legalPage ? `/#${id}` : `#${id}`
+  const closeMobileMenu = () => setIsMobileMenuOpen(false)
+  const handleCommunitySubmit = async (event) => {
+    event.preventDefault()
+    const form = event.currentTarget
+    if (form.elements.website.value) return
+    setCommunitySubmitError('')
+    setIsCommunitySubmitting(true)
+    try {
+      const formData = new FormData(form)
+      const payload = new URLSearchParams({
+        formType: 'community',
+        name: formData.get('name'),
+        email: formData.get('email'),
+        audienceType: formData.get('audienceType'),
+        source: 'Digital Bloom Website',
+        consent: 'Yes',
+        website: formData.get('website') || '',
+      })
+      await fetch(SIGNUP_ENDPOINT, { method: 'POST', mode: 'no-cors', body: payload })
+      setIsCommunitySubmitted(true)
+      form.reset()
+    } catch {
+      setCommunitySubmitError(SIGNUP_ERROR)
+    } finally {
+      setIsCommunitySubmitting(false)
+    }
+  }
 
   return (
     <>
@@ -462,13 +523,34 @@ function App() {
           <a href={homeLink} className="wordmark" aria-label="Digital Bloom home"><img src={logoImage} alt="Digital Bloom" /></a>
           <ul className="nav-links">
             {navLinks.map((link) => {
-              const href = sectionLink(link.href.slice(1))
-              const isActive = !legalPage && window.location.hash === link.href
-              return <li key={link.href}><a className={isActive ? 'is-active' : ''} href={href} aria-current={isActive ? 'page' : undefined}>{link.label}</a></li>
+              const href = link.external ? link.href : sectionLink(link.href.slice(1))
+              const isActive = !link.external && !legalPage && window.location.hash === link.href
+              return <li key={link.href}><a className={isActive ? 'is-active' : ''} href={href} target={link.external ? '_blank' : undefined} rel={link.external ? 'noopener noreferrer' : undefined} aria-current={isActive ? 'page' : undefined}>{link.label}</a></li>
             })}
           </ul>
           <a className="button button-primary nav-cta" href={sectionLink('community')}>Join the Community <span aria-hidden="true">↗</span></a>
+          <button
+            ref={mobileMenuToggleRef}
+            className="mobile-menu-toggle"
+            type="button"
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-navigation"
+            aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+            onClick={() => setIsMobileMenuOpen((isOpen) => !isOpen)}
+          >
+            <span aria-hidden="true">{isMobileMenuOpen ? '×' : '☰'}</span>
+          </button>
         </nav>
+        <div id="mobile-navigation" className={`mobile-menu ${isMobileMenuOpen ? 'is-open' : ''}`} aria-hidden={!isMobileMenuOpen}>
+          <ul>
+            {navLinks.map((link) => {
+              const href = link.external ? link.href : sectionLink(link.href.slice(1))
+              const isActive = !link.external && !legalPage && window.location.hash === link.href
+              return <li key={link.href}><a className={isActive ? 'is-active' : ''} href={href} target={link.external ? '_blank' : undefined} rel={link.external ? 'noopener noreferrer' : undefined} aria-current={isActive ? 'page' : undefined} tabIndex={isMobileMenuOpen ? 0 : -1} onClick={closeMobileMenu}>{link.label}</a></li>
+            })}
+          </ul>
+          <a className="mobile-menu-cta" href={sectionLink('community')} tabIndex={isMobileMenuOpen ? 0 : -1} onClick={closeMobileMenu}>Join the Community <span aria-hidden="true">→</span></a>
+        </div>
       </header>
 
       {legalPage ? <LegalPage type={legalPage} /> : isShop ? <ShopPage /> : isSkinSenseWaitlist ? <SkinSenseWaitlistPage /> : <main id="main-content">
@@ -480,7 +562,7 @@ function App() {
             <p className="hero-copy">Practical technology education and solutions for beauty professionals and small businesses.</p>
             <div className="button-row">
               <a className="button button-primary" href="#what-we-do">Explore Digital Bloom <span aria-hidden="true">↗</span></a>
-              <a className="button button-light" href="https://example.com/beauty-ai-survey" target="_blank" rel="noreferrer">Take the Beauty + AI Survey</a>
+              <a className="button button-light" href={beautyAiSurveyUrl} target="_blank" rel="noopener noreferrer">Take the Beauty + AI Survey</a>
             </div>
           </div>
         </section>
@@ -509,7 +591,7 @@ function App() {
             <h2>Digital Confidence for Beauty Professionals</h2>
             <p>From hairstylists and estheticians to nail techs, barbers, makeup and lash artists, Digital Bloom is designed around the way you actually work.</p>
             <p className="feature-description">Our upcoming program focuses on practical systems, tools, and AI habits you can use immediately.</p>
-            <a className="button button-light" href="https://example.com/beauty-ai-survey" target="_blank" rel="noreferrer">Help Shape the Program <span aria-hidden="true">↗</span></a>
+            <a className="button button-light" href={beautyAiSurveyUrl} target="_blank" rel="noopener noreferrer">Help Shape the Program <span aria-hidden="true">↗</span></a>
           </div>
           <div className="pain-panel">
             <span className="panel-index">COMMON DIGITAL GROWING PAINS</span>
@@ -534,13 +616,26 @@ function App() {
         <Section id="community" className="community" title="We’re growing something." intro="Join the Digital Bloom community for updates, resources, and early access to upcoming programs.">
           <div className="community-inner">
             <div className="community-promise"><span className="promise-mark">✦</span><p>Be the first to know what’s <span className="bloom-word">blooming.</span></p><small>Thoughtful resources and practical ideas, sent occasionally.</small></div>
-            <form id="contact" className="community-form" action="#" method="post">
-              <label htmlFor="name">Name</label><input id="name" name="name" type="text" autoComplete="name" required />
-              <label htmlFor="email">Email</label><input id="email" name="email" type="email" autoComplete="email" required />
-              <label htmlFor="audience">I’m a...</label><select id="audience" name="audience" defaultValue="" required><option value="" disabled>Select one</option><option value="beauty-professional">Beauty Professional</option><option value="small-business-owner">Small Business Owner</option><option value="tech-professional">Tech Professional</option><option value="other">Other</option></select>
-              <button className="button button-primary" type="submit">Grow With Us <span aria-hidden="true">↗</span></button>
-              <p className="form-note">Email integration placeholder — provider setup coming soon.</p>
-            </form>
+            {isCommunitySubmitted ? (
+              <div className="community-success" role="status">
+                <h3>Welcome to the Digital Bloom community.</h3>
+                <p>We’ll keep you updated with thoughtful resources, programs, products, events, and technology updates.</p>
+              </div>
+            ) : (
+              <form id="contact" className="community-form" onSubmit={handleCommunitySubmit}>
+                <label htmlFor="name">Name</label><input id="name" name="name" type="text" autoComplete="name" required />
+                <label htmlFor="email">Email</label><input id="email" name="email" type="email" autoComplete="email" required />
+                <label htmlFor="audience">I’m a...</label><select id="audience" name="audienceType" defaultValue="" required><option value="" disabled>Select one</option><option value="Beauty Professional">Beauty Professional</option><option value="Small Business Owner">Small Business Owner</option><option value="Tech Professional">Tech Professional</option><option value="Other">Other</option></select>
+                <label className="consent-checkbox">
+                  <input type="checkbox" name="consentGiven" required />
+                  <span>I agree to receive emails from Digital Bloom about resources, programs, products, events, and technology updates.</span>
+                </label>
+                <input className="honeypot" name="website" type="text" tabIndex="-1" autoComplete="off" aria-hidden="true" />
+                {communitySubmitError ? <p className="community-error" role="alert">{communitySubmitError}</p> : null}
+                <button className="button button-primary" type="submit" disabled={isCommunitySubmitting}>{isCommunitySubmitting ? 'Submitting…' : 'Grow With Us'} <span aria-hidden="true">↗</span></button>
+                <p className="form-note">Thoughtful resources and practical ideas, sent occasionally.</p>
+              </form>
+            )}
           </div>
         </Section>
       </main>}
