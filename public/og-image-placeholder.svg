@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Digital Bloom OG image placeholder">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8f4ed" />
+      <stop offset="1" stop-color="#efe6da" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <circle cx="940" cy="190" r="190" fill="#20412f" opacity="0.09" />
+  <circle cx="1020" cy="500" r="120" fill="#8b6b95" opacity="0.12" />
+  <text x="100" y="290" fill="#173023" font-family="Georgia, serif" font-size="86" font-weight="700">Digital Bloom</text>
+  <text x="100" y="370" fill="#37343c" font-family="Arial, sans-serif" font-size="38">Technology that helps your business bloom.</text>
+</svg>
