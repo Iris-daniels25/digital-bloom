@@ -135,6 +135,40 @@ const shopProducts = [
     downloadType: 'service',
   },
   {
+    name: 'Starter',
+    description: 'A simple starting point for small businesses seeking help with their first automations.',
+    category: 'Services',
+    type: 'Service',
+    price: '$197 setup + $49/month',
+    image: logoImage,
+    contactUrl: 'mailto:hello@thedigitalbloom.co',
+    cta: 'Ask About Starter',
+    isAutomationService: true,
+  },
+  {
+    name: 'Built for You',
+    description: 'A business automation system set up for you, including a CRM, up to 10 automations, an AI receptionist or chat assistant, review and reactivation workflows, training, and 30 days of support. Required software is paid for separately by the client.',
+    category: 'Services',
+    type: 'Service',
+    price: '$997 one-time',
+    image: logoImage,
+    payhipUrl: 'https://payhip.com/b/cG2gM',
+    cta: 'Explore Built for You',
+    isLive: true,
+    isAutomationService: true,
+  },
+  {
+    name: 'Managed for You',
+    description: 'Ongoing setup and management of your business automations, with a separate $497 one-time setup fee and recurring management at $497 per month.',
+    category: 'Services',
+    type: 'Service',
+    price: '$497 setup + $497/month',
+    image: logoImage,
+    contactUrl: 'mailto:hello@thedigitalbloom.co',
+    cta: 'Ask About Managed for You',
+    isAutomationService: true,
+  },
+  {
     name: 'Practical Technology Workshop',
     description: 'A placeholder workshop for building confidence with the tools your business actually needs.',
     category: 'Courses & Workshops',
@@ -165,8 +199,10 @@ const shopProducts = [
 ]
 
 function ProductCard({ product }) {
+  const actionUrl = product.payhipUrl || product.contactUrl
+
   return (
-    <article className="product-card">
+    <article className={`product-card${product.isAutomationService ? ' product-card-automation' : ''}`}>
       <div className="product-image">
         {product.image ? <img src={product.image} alt="" /> : <span>{product.isLive ? 'Digital Bloom download' : 'Product image'}<br />{product.isLive ? 'available now' : 'coming soon'}</span>}
         {product.badge ? <span className={`product-badge ${product.isLive ? 'is-live' : ''}`}>{product.badge}</span> : null}
@@ -177,9 +213,9 @@ function ProductCard({ product }) {
         <p>{product.description}</p>
         <div className="product-card-footer">
           <strong>Price: {product.price}</strong>
-          <a className="text-link" href={product.payhipUrl || '#shop'} onClick={(event) => { if (!product.payhipUrl) event.preventDefault() }}>
+          {product.cta ? <a className="text-link" href={actionUrl || '#shop'} onClick={(event) => { if (!actionUrl) event.preventDefault() }}>
             {product.cta} <span aria-hidden="true">→</span>
-          </a>
+          </a> : null}
         </div>
       </div>
     </article>
