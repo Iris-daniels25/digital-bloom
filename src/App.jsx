@@ -142,10 +142,10 @@ const shopProducts = [
     description: 'A simple starting point for small businesses seeking help with their first automations.',
     category: 'Services',
     type: 'Service',
-    price: '$197 setup · first month free · then $49/month',
+    price: '$197 setup only at checkout · first month free, then $49/month',
     image: starterImage,
-    payhipUrl: 'https://payhip.com/b/e91J3',
-    cta: 'Explore Starter',
+    payhipUrl: 'https://payhip.com/order?link=e91J3&pricing_plan=APzDPraVzE',
+    cta: 'Pay $197 Setup',
     isAutomationService: true,
   },
   {
@@ -165,10 +165,10 @@ const shopProducts = [
     description: 'Ongoing setup and management of your business automations, with a separate $497 one-time setup fee and recurring management at $497 per month.',
     category: 'Services',
     type: 'Service',
-    price: '$497 setup · first month free · then $497/month',
+    price: '$497 setup only at checkout · first month free, then $497/month',
     image: managedForYouImage,
-    payhipUrl: 'https://payhip.com/b/GKToN',
-    cta: 'Explore Managed for You',
+    payhipUrl: 'https://payhip.com/order?link=GKToN&pricing_plan=q3BoKD03BE',
+    cta: 'Pay $497 Setup',
     isAutomationService: true,
   },
   {
@@ -202,21 +202,23 @@ const shopProducts = [
 ]
 
 function ProductCard({ product }) {
-  const actionUrl = product.payhipUrl || product.contactUrl
+  const checkoutUrl = product.payhipUrl
 
   return (
     <article className={`product-card${product.isAutomationService ? ' product-card-automation' : ''}`}>
       <div className="product-image">
-        {product.image ? <img src={product.image} alt="" /> : <span>{product.isLive ? 'Digital Bloom download' : 'Product image'}<br />{product.isLive ? 'available now' : 'coming soon'}</span>}
+        {product.image ? (
+          checkoutUrl ? <a className="product-image-link" href={checkoutUrl} aria-label={`View ${product.name} on Payhip`}><img src={product.image} alt="" /></a> : <img src={product.image} alt="" />
+        ) : <span>{product.isLive ? 'Digital Bloom download' : 'Product image'}<br />{product.isLive ? 'available now' : 'coming soon'}</span>}
         {product.badge ? <span className={`product-badge ${product.isLive ? 'is-live' : ''}`}>{product.badge}</span> : null}
       </div>
       <div className="product-card-copy">
         <p className="product-type">{product.type}</p>
-        <h2>{product.name}</h2>
+        <h2>{checkoutUrl ? <a className="product-title-link" href={checkoutUrl}>{product.name}</a> : product.name}</h2>
         <p>{product.description}</p>
         <div className="product-card-footer">
           <strong>Price: {product.price}</strong>
-          {product.cta ? <a className="text-link" href={actionUrl || '#shop'} onClick={(event) => { if (!actionUrl) event.preventDefault() }}>
+          {product.cta && checkoutUrl ? <a className="text-link" href={checkoutUrl}>
             {product.cta} <span aria-hidden="true">→</span>
           </a> : null}
         </div>
