@@ -9,6 +9,9 @@ import checkupImage from './assets/the_beauty_pro_digital_checkup.png'
 import consultationImage from './assets/Beauty_Business_Tech_Consult.png'
 import websiteImage from './assets/One_Page_Website_Setup.png'
 import logoImage from './assets/digital-bloom-logo.png'
+import starterImage from './assets/starter.png'
+import builtForYouImage from './assets/builtforyou.png'
+import managedForYouImage from './assets/managedfor you.png'
 
 const SIGNUP_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxKO5y6Y2-REKxyVwzBl93G5HQMDUmh58cRk7xj7oprcAUYWOh0aQQ8t7zWj9EDUdbA/exec'
 const SIGNUP_ERROR = 'Something went wrong. Please try again or email support@thedigitalbloom.co.'
@@ -139,10 +142,10 @@ const shopProducts = [
     description: 'A simple starting point for small businesses seeking help with their first automations.',
     category: 'Services',
     type: 'Service',
-    price: '$197 setup + $49/month',
-    image: logoImage,
-    contactUrl: 'mailto:hello@thedigitalbloom.co',
-    cta: 'Ask About Starter',
+    price: '$197 setup · first month free · then $49/month',
+    image: starterImage,
+    payhipUrl: 'https://payhip.com/b/e91J3',
+    cta: 'Explore Starter',
     isAutomationService: true,
   },
   {
@@ -151,7 +154,7 @@ const shopProducts = [
     category: 'Services',
     type: 'Service',
     price: '$997 one-time',
-    image: logoImage,
+    image: builtForYouImage,
     payhipUrl: 'https://payhip.com/b/cG2gM',
     cta: 'Explore Built for You',
     isLive: true,
@@ -162,10 +165,10 @@ const shopProducts = [
     description: 'Ongoing setup and management of your business automations, with a separate $497 one-time setup fee and recurring management at $497 per month.',
     category: 'Services',
     type: 'Service',
-    price: '$497 setup + $497/month',
-    image: logoImage,
-    contactUrl: 'mailto:hello@thedigitalbloom.co',
-    cta: 'Ask About Managed for You',
+    price: '$497 setup · first month free · then $497/month',
+    image: managedForYouImage,
+    payhipUrl: 'https://payhip.com/b/GKToN',
+    cta: 'Explore Managed for You',
     isAutomationService: true,
   },
   {
