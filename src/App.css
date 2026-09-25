@@ -648,16 +648,6 @@ body { background: var(--color-forest-deep); color: var(--color-text); }
   }
 }
 @media(max-width:800px) {
-  .skinsense-visual {
-    min-height: 0;
-  }
-  .skinsense-image {
-    width: 100%;
-    max-width: 100%;
-    height: auto;
-    min-height: 0;
-    object-fit: contain;
-  }
   .shop-page { padding-top: 4.4rem; }
   .shop-page::before {
     background-position: 55% top;
