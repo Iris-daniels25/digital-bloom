@@ -613,7 +613,7 @@ function App() {
       <a className="skip-link" href="#main-content">Skip to content</a>
       <header className={`site-header ${isScrolled ? 'is-scrolled' : ''}`}>
         <nav className="nav" aria-label="Primary">
-          <a href={homeLink} className="wordmark" aria-label="Digital Bloom home">Digital <span className="bloom-word">Bloom</span></a>
+          <a href={homeLink} className="wordmark" aria-label="Digital Bloom home">Digital<span className="bloom-word">Bloom.</span></a>
           <ul className="nav-links">
             {navLinks.map((link) => {
               const href = link.external ? link.href : sectionLink(link.href.slice(1))
