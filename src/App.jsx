@@ -8,7 +8,6 @@ import shopBackground from './assets/shop-background-orbits.png'
 import checkupImage from './assets/the_beauty_pro_digital_checkup.png'
 import consultationImage from './assets/Beauty_Business_Tech_Consult.png'
 import websiteImage from './assets/One_Page_Website_Setup.png'
-import logoImage from './assets/digital-bloom-logo.png'
 import starterImage from './assets/starter.png'
 import builtForYouImage from './assets/builtforyou.png'
 import managedForYouImage from './assets/managedfor you.png'
@@ -614,7 +613,7 @@ function App() {
       <a className="skip-link" href="#main-content">Skip to content</a>
       <header className={`site-header ${isScrolled ? 'is-scrolled' : ''}`}>
         <nav className="nav" aria-label="Primary">
-          <a href={homeLink} className="wordmark" aria-label="Digital Bloom home"><img src={logoImage} alt="Digital Bloom" /></a>
+          <a href={homeLink} className="wordmark" aria-label="Digital Bloom home">Digital <span className="bloom-word">Bloom</span></a>
           <ul className="nav-links">
             {navLinks.map((link) => {
               const href = link.external ? link.href : sectionLink(link.href.slice(1))
