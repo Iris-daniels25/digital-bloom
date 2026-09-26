@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "npm": "^12.1.0",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "run": "^2.1.5"
   },
   "devDependencies": {
     "@types/react": "^19.2.18",
