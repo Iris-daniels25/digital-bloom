@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import './App.css'
 
 const beautyAiSurveyUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSe-Ii6gK3j3HmTPQMGPJdulPqDzzRxz7J7ktVuAgMYfuFDmBQ/viewform?usp=header'
@@ -109,6 +109,11 @@ const shopProducts = [
     cta: 'Get the Free Checkup',
     isLive: true,
     downloadType: 'digital-download',
+    details: [
+      { heading: 'What You’ll Get', items: ['A review of your current digital business setup', 'A look at areas where technology may be creating unnecessary manual work', 'Identification of opportunities to improve your client experience', 'Practical recommendations for what to improve next'] },
+      { heading: 'Best For', text: 'Beauty professionals who know they need better systems but are not sure where to begin.' },
+      { heading: 'Why Start Here', text: 'Use the checkup to understand where your business currently stands before investing in new technology, automation, or a larger Digital Bloom service.' },
+    ],
   },
   {
     name: 'Beauty Business Tech Consultation',
@@ -121,6 +126,11 @@ const shopProducts = [
     cta: 'Book Your Consultation',
     isLive: true,
     downloadType: 'service',
+    details: [
+      { heading: 'What We Can Discuss', items: ['Your current business technology', 'Booking and client-management challenges', 'Automation opportunities', 'AI tools that may make sense for your workflow', 'Website or digital-system needs', 'Questions about choosing or connecting business tools'] },
+      { heading: 'Best For', text: 'Beauty professionals and small-business owners who want personalized guidance before deciding what technology or systems to implement.' },
+      { heading: 'What You’ll Leave With', text: 'A clearer understanding of your technology priorities and practical next steps for your business.' },
+    ],
   },
   {
     name: 'Beauty Pro One-Page Website',
@@ -133,6 +143,11 @@ const shopProducts = [
     cta: 'Get Your Website',
     isLive: true,
     downloadType: 'service',
+    details: [
+      { heading: 'What’s Included', items: ['A professionally designed one-page business website', 'Mobile-friendly layout', 'Your essential business information organized in one place', 'Space for your services, brand information, and client call-to-action', 'Links to your existing booking, contact, or social platforms', 'Setup and launch of the finished page'] },
+      { heading: 'Best For', text: 'Beauty professionals who need a polished online presence without the cost or complexity of a large multi-page website.' },
+      { heading: 'What You Provide', text: 'You provide the business information, branding, images, and links needed to build your page.' },
+    ],
   },
   {
     name: 'Starter',
@@ -144,6 +159,12 @@ const shopProducts = [
     payhipUrl: 'https://payhip.com/order?link=e91J3&pricing_plan=APzDPraVzE',
     cta: 'Pay $197 Setup',
     isAutomationService: true,
+    details: [
+      { heading: 'What’s Included', items: ['1-page business website', 'Online booking setup', 'Basic CRM / client management system', 'Lead or contact form', 'Choose 3 Digital Bloom automations', 'Appointment reminders', 'Client communication tools', 'Initial setup, testing, and launch support'] },
+      { heading: 'Best For', text: 'Beauty professionals or small businesses that want to stop doing everything manually and start with the essential systems needed to manage clients, bookings, and follow-up.' },
+      { heading: 'Good Starter Automations', text: 'Examples may include:', items: ['Appointment reminders', 'New lead follow-up', 'Missed-call text back', 'Review requests', 'Basic client follow-up'] },
+      { heading: 'Software', text: 'The software platform is included in the monthly plan. Domain registration and certain usage-based services may be separate.' },
+    ],
   },
   {
     name: 'Built for You',
@@ -156,6 +177,12 @@ const shopProducts = [
     cta: 'Pay $997',
     isLive: true,
     isAutomationService: true,
+    details: [
+      { heading: 'What’s Included', items: ['Full CRM and client pipeline setup', 'Online booking system', 'Up to 10 automation workflows', 'AI receptionist setup', 'AI website/chat assistant setup', 'Lead follow-up automation', 'Appointment reminder workflows', 'Review request automation', 'Client reactivation workflows', 'Custom messaging and business setup', 'System testing and launch', 'Training on how to use the system', '30 days of launch support'] },
+      { heading: 'Best For', text: 'Business owners who want a complete digital system built for them but prefer to manage the system themselves after launch.' },
+      { heading: 'After Setup', text: 'Digital Bloom builds, configures, tests, and launches the system, then provides training and 30 days of support.' },
+      { heading: 'Software', text: 'The client is responsible for the required software subscription and usage costs after setup.' },
+    ],
   },
   {
     name: 'Managed for You',
@@ -167,6 +194,12 @@ const shopProducts = [
     payhipUrl: 'https://payhip.com/order?link=GKToN&pricing_plan=q3BoKD03BE',
     cta: 'Pay $497 Setup',
     isAutomationService: true,
+    details: [
+      { heading: 'What’s Included', items: ['Full automation system', 'CRM and online booking', 'AI receptionist', 'AI chat assistant', 'Up to 10 core workflows', 'Lead and client follow-up', 'Appointment reminder systems', 'Review automation', 'Client reactivation system', 'Ongoing system management', 'Workflow updates and optimization', 'Ongoing Digital Bloom support', 'Dedicated business workspace/account'] },
+      { heading: 'Best For', text: 'Business owners who want the benefits of automation without having to manage the technology themselves.' },
+      { heading: 'Ongoing Management', text: 'Digital Bloom continues managing, updating, troubleshooting, and optimizing the system after launch.' },
+      { heading: 'Software', text: 'The managed software platform is included. AI calling, texting, and other usage-based services are subject to included allowances and possible overages.' },
+    ],
   },
   {
     name: 'Practical Technology Workshop',
@@ -200,6 +233,8 @@ const shopProducts = [
 
 function ProductCard({ product }) {
   const checkoutUrl = product.payhipUrl
+  const [isExpanded, setIsExpanded] = useState(false)
+  const detailsId = useId()
 
   return (
     <article className={`product-card${product.isAutomationService ? ' product-card-automation' : ''}`}>
@@ -213,6 +248,27 @@ function ProductCard({ product }) {
         <p className="product-type">{product.type}</p>
         <h2>{checkoutUrl ? <a className="product-title-link" href={checkoutUrl}>{product.name}</a> : product.name}</h2>
         <p>{product.description}</p>
+        {product.details ? <>
+          <button
+            type="button"
+            className="product-details-toggle"
+            aria-expanded={isExpanded}
+            aria-controls={detailsId}
+            aria-label={`${isExpanded ? 'Show Less' : 'Learn More'} about ${product.name}`}
+            onClick={() => setIsExpanded((expanded) => !expanded)}
+          >
+            {isExpanded ? 'Show Less' : 'Learn More'} <span aria-hidden="true">{isExpanded ? '−' : '+'}</span>
+          </button>
+          <div id={detailsId} className={`product-details${isExpanded ? ' is-expanded' : ''}`} aria-hidden={!isExpanded} inert={!isExpanded}>
+            <div className="product-details-inner">
+              {product.details.map((section) => <div className="product-details-section" key={section.heading}>
+                <h3>{section.heading}</h3>
+                {section.text ? <p>{section.text}</p> : null}
+                {section.items ? <ul>{section.items.map((item) => <li key={item}>{item}</li>)}</ul> : null}
+              </div>)}
+            </div>
+          </div>
+        </> : null}
         <div className="product-card-footer">
           <strong>Price: {product.price}</strong>
           {product.cta && checkoutUrl ? <a className="text-link" href={checkoutUrl}>
