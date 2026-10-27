@@ -162,3 +162,20 @@ Git preparation: Working on `feature/service-expansion`; fetched origin and conf
 Next steps: Commit feature work, merge into main, push, wait for the GitHub Pages workflow, and independently verify public routes and preview URLs. Deployment and public safety are not yet claimed complete; append a completion record after verification. The comprehensive website audit remains deferred.
 
 Staged-file review found one formatting-only extra blank line at the end of `src/pages/servicePresentation.js`; it was removed before committing. Lint, production build, and staged whitespace checks are being rerun. No runtime behavior or launch setting changed.
+
+
+## 2026-10-27 02:50:53 UTC — Coming Soon release deployed and publicly verified
+
+Summary: All 41 intended project files listed in the pre-deployment record were saved in feature commit `74690e05f222551c76cadf887e60e7b44228a860`, merged without conflicts into main as `44abdd7390096023c12b1a607b77445309634ace`, and pushed to GitHub. All completed pages, approved photographs, six Stripe links, forms, UX refinements, and functionality are preserved in source. The approved design was not changed for release. The only release-specific changes were deployment documentation, this append-only audit report, and removing a formatting-only extra end-of-file blank line from `src/pages/servicePresentation.js`.
+
+Deployment: GitHub Actions “Deploy to GitHub Pages” run `40440512734` completed successfully for merge commit `44abdd7390096023c12b1a607b77445309634ace`. Build, dependency installation, artifact upload, and Pages deployment succeeded. Workflow: https://github.com/Iris-daniels25/digital-bloom/actions/runs/40440512734
+
+Public URL: https://thedigitalbloom.co/
+
+Validation/results: Local lint and production build passed. The staged whitespace check passed after the formatting-only cleanup. Chromium checked the built production artifact and the deployed public website on the root, `?preview=full`, Services overview, all four service-detail preview routes, Contact preview, SkinSense preview hash, and a recovered Contact route. Every case rendered the existing Coming Soon page, with no full-site homepage, service cards, Stripe Pay Now buttons, or inquiry form exposed. Manually setting the development-preview sessionStorage flag did not bypass the gate. The public JavaScript entry `/assets/index-vSdQxxUX.js` matched the tested build, and the development-preview storage key/override was absent from production JavaScript. No browser runtime errors occurred. No forms or payments were submitted.
+
+Production safety: `COMING_SOON_ENABLED` remains true. The original Coming Soon component and CSS Module match their previously committed versions. `?preview=full` remains gated by `import.meta.env.DEV` and works only in the local development server. The GitHub Pages workflow publishes `dist/`, not the development server.
+
+Files affected: The full 41-file release list is recorded above; this post-deployment follow-up changes `audit.md` only. Features affected: Source work is saved; the public website continues to show Coming Soon.
+
+Next steps/limitations: No outstanding release safety issue was found. The comprehensive website audit remains deferred; prior payment and inquiry integration limitations remain documented and unchanged. This verified completion record is being committed and pushed as a documentation-only follow-up; it does not change the tested website artifact.
