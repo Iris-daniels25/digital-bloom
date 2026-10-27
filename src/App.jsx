@@ -1,8 +1,15 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import './App.css'
+import ServicePages from './pages/ServicePages'
+import ContactPage from './pages/ContactPage'
+import ServiceIcon from './components/ServiceIcon'
+import lotusImage from './assets/lotusflowerdb.jpeg'
+import beautyConsultationImage from './assets/Pink Lotus Beauty Studio Consultation.png'
+import './LotusPages.css'
+import './UXPolish.css'
+import { serviceCatalog } from './pages/serviceData'
 
 const beautyAiSurveyUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSe-Ii6gK3j3HmTPQMGPJdulPqDzzRxz7J7ktVuAgMYfuFDmBQ/viewform?usp=header'
-import heroImage from './assets/digital-bloom-hero.png'
 import skinsenseImage from './assets/skinsense-showcase.png'
 import shopBackground from './assets/shop-background-orbits.png'
 import checkupImage from './assets/the_beauty_pro_digital_checkup.png'
@@ -54,37 +61,13 @@ const termsSections = [
 ]
 
 const navLinks = [
-  { href: '#what-we-do', label: 'What We Do' },
-  { href: '#beauty', label: 'For Beauty Pros' },
+  { href: '/#top', label: 'Home' },
+  { href: '/services', label: 'Services' },
+  { href: '/services/senior-digital-safety-academy', label: 'Senior Digital Safety Academy' },
+  { href: '/#skinsense-waitlist', label: 'SkinSense' },
   { href: beautyAiSurveyUrl, label: 'Beauty + AI Survey', external: true },
-  { href: '#shop', label: 'Shop' },
-  { href: '#skinsense-waitlist', label: 'SkinSense Waitlist' },
-  { href: '#community', label: 'Contact' },
-]
-
-const services = [
-  {
-    title: 'Digital Education',
-    description: 'Practical learning on AI, digital tools, cybersecurity, and workshops designed for real business needs.',
-    accent: 'neutral',
-  },
-  {
-    title: 'Business Technology Solutions',
-    description: 'Simple automations for leads, follow-up, scheduling, communication, and day-to-day operations.',
-    accent: 'dark',
-  },
-  {
-    title: 'Digital Products & Tools',
-    description: 'Actionable templates, guides, resources, and technology products you can use right away.',
-    accent: 'white',
-  },
-]
-
-const painPoints = [
-  'I keep hearing about AI but don’t know where to start.',
-  'I answer the same client questions repeatedly.',
-  'I want clients to automatically follow up or rebook.',
-  'There are too many apps and I don’t know what I need.',
+  { href: '/contact', label: 'Contact' },
+  { href: '/#beauty', label: 'For Beauty Pros' },
 ]
 
 const shopCategories = [
@@ -279,7 +262,8 @@ function ProductCard({ product }) {
   )
 }
 
-function ShopPage() {
+// Archived shop: retained for future use, intentionally absent from public routing.
+export function ShopPage() {
   const [activeCategory, setActiveCategory] = useState('All')
   const visibleProducts = shopProducts
     .filter((product) => product.isVisible !== false)
@@ -365,7 +349,7 @@ function SkinSenseWaitlistPage() {
 
           {isSubmitted ? (
             <div className="skinsense-waitlist-success" role="status">
-              <h2>You’re on the SkinSense waitlist.</h2>
+              <h2>Your SkinSense signup request has been sent.</h2>
               <p>We’ll keep you updated as SkinSense develops and let you know when early testing and access become available.</p>
             </div>
           ) : (
@@ -444,57 +428,6 @@ function LegalPage({ type }) {
   )
 }
 
-function Slider({ items, label, renderItem, hideCounter = false }) {
-  const trackRef = useRef(null)
-  const [activeIndex, setActiveIndex] = useState(0)
-
-  useEffect(() => {
-    const track = trackRef.current
-    if (!track) return undefined
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting && entry.intersectionRatio > 0.6) {
-          setActiveIndex(Array.from(track.children).indexOf(entry.target))
-        }
-      })
-    }, { root: track, threshold: [0.6] })
-    Array.from(track.children).forEach((slide) => observer.observe(slide))
-    return () => observer.disconnect()
-  }, [items.length])
-
-  const move = (direction) => {
-    const nextIndex = Math.max(0, Math.min(items.length - 1, activeIndex + direction))
-    trackRef.current?.children[nextIndex]?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'nearest',
-      inline: 'start',
-    })
-    setActiveIndex(nextIndex)
-  }
-
-  return (
-    <div className="slider">
-      <div className="slider-toolbar">
-        {!hideCounter ? (
-          <span className="slider-count" aria-live="polite">
-            {String(activeIndex + 1).padStart(2, '0')} / {String(items.length).padStart(2, '0')}
-          </span>
-        ) : <span aria-hidden="true" />}
-        <div className="slider-controls">
-          <button type="button" className="slider-arrow" onClick={() => move(-1)} disabled={activeIndex === 0} aria-label={`Previous ${label}`}>←</button>
-          <button type="button" className="slider-arrow" onClick={() => move(1)} disabled={activeIndex === items.length - 1} aria-label={`Next ${label}`}>→</button>
-        </div>
-      </div>
-      <div className="slider-track" ref={trackRef} aria-label={label} role="region">
-        {items.map((item, index) => renderItem(item, index))}
-      </div>
-      <div className="slider-progress" aria-hidden="true">
-        {items.map((item, index) => <span className={index === activeIndex ? 'is-active' : ''} key={item.title} />)}
-      </div>
-    </div>
-  )
-}
-
 function Section({ id, title, intro, children, className = '' }) {
   return (
     <section id={id} className={`section ${className}`.trim()} data-animate>
@@ -510,6 +443,10 @@ function Section({ id, title, intro, children, className = '' }) {
 }
 
 function App() {
+  const contactPath = window.location.pathname === '/contact'
+  const servicePath = window.location.pathname === '/services' || window.location.pathname.startsWith('/services/')
+  const serviceSlug = window.location.pathname.split('/')[2]
+  const [currentHash, setCurrentHash] = useState(window.location.hash)
   const [isScrolled, setIsScrolled] = useState(false)
   const [isCommunitySubmitted, setIsCommunitySubmitted] = useState(false)
   const [isCommunitySubmitting, setIsCommunitySubmitting] = useState(false)
@@ -522,8 +459,10 @@ function App() {
 
   useEffect(() => {
     const onHashChange = () => {
+      setCurrentHash(window.location.hash)
       const shopRoute = window.location.hash === '#shop'
       const waitlistRoute = window.location.hash === '#skinsense-waitlist'
+      if (shopRoute) { window.location.replace('/services'); return }
       setIsShop(shopRoute)
       setIsSkinSenseWaitlist(waitlistRoute)
       if (shopRoute || waitlistRoute) window.scrollTo(0, 0)
@@ -533,16 +472,18 @@ function App() {
     onScroll()
     window.addEventListener('hashchange', onHashChange)
     window.addEventListener('popstate', onPathChange)
-    const pageTitle = legalPage === 'privacy' ? 'Privacy Policy | Digital Bloom' : legalPage === 'terms' ? 'Terms of Use | Digital Bloom' : 'Digital Bloom | Technology Education + Solutions'
-    const pageDescription = legalPage === 'privacy'
+    const activeService = serviceCatalog.find(service => service.slug === serviceSlug)
+    const pageTitle = contactPath ? 'Contact | Digital Bloom' : servicePath ? `${activeService?.title || 'Services'} | Digital Bloom` : isShop ? 'Services | Digital Bloom' : isSkinSenseWaitlist ? 'SkinSense Waitlist | Digital Bloom' : legalPage === 'privacy' ? 'Privacy Policy | Digital Bloom' : legalPage === 'terms' ? 'Terms of Use | Digital Bloom' : 'Digital Bloom | Technology Education + Solutions'
+    const pageDescription = contactPath ? 'Discuss your technology needs with Digital Bloom. Explore practical support for your business, organization, or everyday digital life.' : servicePath ? activeService?.intro || 'Explore Digital Bloom website services, virtual meeting and webinar support, creator moderation, and the Senior Digital Safety Academy.' : isSkinSenseWaitlist ? 'Join the SkinSense waitlist for product updates and early-access news.' : legalPage === 'privacy'
       ? 'Read the Digital Bloom Privacy Policy.'
       : legalPage === 'terms'
         ? 'Read the Digital Bloom Terms of Use.'
         : 'Digital Bloom provides practical technology education and solutions for beauty professionals and small businesses.'
     document.title = pageTitle
     document.querySelector('meta[name="description"]')?.setAttribute('content', pageDescription)
-    const routedPath = new URLSearchParams(window.location.search).get('route')
-    if (routedPath && legalPath(routedPath)) window.history.replaceState({}, '', `/${legalPath(routedPath)}`)
+    document.querySelector('meta[property="og:title"]')?.setAttribute('content', pageTitle)
+    document.querySelector('meta[property="og:description"]')?.setAttribute('content', pageDescription)
+    document.querySelector('meta[property="og:url"]')?.setAttribute('content', `https://thedigitalbloom.co${window.location.pathname}`)
     window.addEventListener('scroll', onScroll, { passive: true })
     const animatedElements = document.querySelectorAll('[data-animate]')
     const observer = new IntersectionObserver((entries) => {
@@ -554,33 +495,74 @@ function App() {
       })
     }, { threshold: 0.12 })
     animatedElements.forEach((element) => observer.observe(element))
+    if (window.location.hash) requestAnimationFrame(() => document.getElementById(window.location.hash.slice(1))?.scrollIntoView())
     return () => {
       window.removeEventListener('hashchange', onHashChange)
       window.removeEventListener('popstate', onPathChange)
       window.removeEventListener('scroll', onScroll)
       observer.disconnect()
     }
-  }, [isShop, isSkinSenseWaitlist, legalPage])
+  }, [isShop, isSkinSenseWaitlist, legalPage, servicePath, serviceSlug, contactPath])
 
   useEffect(() => {
     if (!isMobileMenuOpen) return undefined
+    const menu = document.getElementById('mobile-navigation')
+    const focusable = () => [mobileMenuToggleRef.current, ...menu.querySelectorAll('a[href]')].filter(Boolean)
+    const focusFirstLink = () => menu.querySelector('a')?.focus()
+    const focusFrame = requestAnimationFrame(focusFirstLink)
+    const onMenuVisible = (event) => {
+      if (event.target === menu && document.activeElement === mobileMenuToggleRef.current) focusFirstLink()
+    }
+    menu.addEventListener('transitionend', onMenuVisible)
     const onKeyDown = (event) => {
+      if (event.key === 'Tab') {
+        const elements = focusable()
+        const first = elements[0]
+        const last = elements[elements.length - 1]
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus() }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus() }
+      }
       if (event.key === 'Escape') {
         setIsMobileMenuOpen(false)
         mobileMenuToggleRef.current?.focus()
       }
     }
+    const previousOverflow = document.body.style.overflow
+    const background = Array.from(document.querySelectorAll('main, .site-footer')).map(element => [element, element.inert])
+    background.forEach(([element]) => { element.inert = true })
+    const desktopQuery = window.matchMedia('(min-width: 1201px)')
+    const onDesktop = () => {
+      if (!desktopQuery.matches) return
+      setIsMobileMenuOpen(false)
+      // Hiding the mobile menu can move focus to body before this event runs.
+      requestAnimationFrame(() => document.querySelector('.nav-links a[aria-current="page"], .nav-links a[aria-current="location"]')?.focus())
+    }
+    desktopQuery.addEventListener('change', onDesktop)
+    onDesktop()
     document.body.style.overflow = 'hidden'
     document.addEventListener('keydown', onKeyDown)
     return () => {
-      document.body.style.overflow = ''
+      cancelAnimationFrame(focusFrame)
+      menu.removeEventListener('transitionend', onMenuVisible)
+      desktopQuery.removeEventListener('change', onDesktop)
+      background.forEach(([element, wasInert]) => { element.inert = wasInert })
+      document.body.style.overflow = previousOverflow
       document.removeEventListener('keydown', onKeyDown)
     }
   }, [isMobileMenuOpen])
 
-  const homeLink = legalPage ? '/' : '#top'
-  const sectionLink = (id) => legalPage ? `/#${id}` : `#${id}`
+  const homeLink = legalPage || servicePath || contactPath ? '/#top' : '#top'
+  const sectionLink = (id) => legalPage || servicePath || contactPath ? `/#${id}` : `#${id}`
   const closeMobileMenu = () => setIsMobileMenuOpen(false)
+  const navState = (link) => {
+    if (link.external) return undefined
+    if (link.href === '/services') return servicePath ? (serviceSlug ? 'location' : 'page') : isShop ? 'page' : undefined
+    if (link.href === '/#skinsense-waitlist') return isSkinSenseWaitlist ? 'page' : undefined
+    if (link.href === '/#top') return !legalPage && !servicePath && !contactPath && !isSkinSenseWaitlist && currentHash !== '#beauty' ? 'page' : undefined
+    if (link.href.includes('#')) return !legalPage && !servicePath && !contactPath && !isSkinSenseWaitlist && `/${currentHash}` === link.href ? 'location' : undefined
+    return window.location.pathname === link.href ? 'page' : undefined
+  }
+
   const handleCommunitySubmit = async (event) => {
     event.preventDefault()
     const form = event.currentTarget
@@ -616,9 +598,9 @@ function App() {
           <a href={homeLink} className="wordmark" aria-label="Digital Bloom home">Digital<span className="bloom-word">Bloom.</span></a>
           <ul className="nav-links">
             {navLinks.map((link) => {
-              const href = link.external ? link.href : sectionLink(link.href.slice(1))
-              const isActive = !link.external && !legalPage && window.location.hash === link.href
-              return <li key={link.href}><a className={isActive ? 'is-active' : ''} href={href} target={link.external ? '_blank' : undefined} rel={link.external ? 'noopener noreferrer' : undefined} aria-current={isActive ? 'page' : undefined}>{link.label}</a></li>
+              const href = link.href
+              const isActive = navState(link)
+              return <li key={link.href}><a className={isActive ? 'is-active' : ''} href={href} target={link.external ? '_blank' : undefined} rel={link.external ? 'noopener noreferrer' : undefined} aria-current={isActive}>{link.label}</a></li>
             })}
           </ul>
           <a className="button button-primary nav-cta" href={sectionLink('community')}>Join the Community <span aria-hidden="true">↗</span></a>
@@ -634,69 +616,63 @@ function App() {
             <span aria-hidden="true">{isMobileMenuOpen ? '×' : '☰'}</span>
           </button>
         </nav>
-        <div id="mobile-navigation" className={`mobile-menu ${isMobileMenuOpen ? 'is-open' : ''}`} aria-hidden={!isMobileMenuOpen}>
+        <nav id="mobile-navigation" aria-label="Mobile primary" className={`mobile-menu ${isMobileMenuOpen ? 'is-open' : ''}`} aria-hidden={!isMobileMenuOpen}>
           <ul>
             {navLinks.map((link) => {
-              const href = link.external ? link.href : sectionLink(link.href.slice(1))
-              const isActive = !link.external && !legalPage && window.location.hash === link.href
-              return <li key={link.href}><a className={isActive ? 'is-active' : ''} href={href} target={link.external ? '_blank' : undefined} rel={link.external ? 'noopener noreferrer' : undefined} aria-current={isActive ? 'page' : undefined} tabIndex={isMobileMenuOpen ? 0 : -1} onClick={closeMobileMenu}>{link.label}</a></li>
+              const href = link.href
+              const isActive = navState(link)
+              return <li key={link.href}><a className={isActive ? 'is-active' : ''} href={href} target={link.external ? '_blank' : undefined} rel={link.external ? 'noopener noreferrer' : undefined} aria-current={isActive} tabIndex={isMobileMenuOpen ? 0 : -1} onClick={closeMobileMenu}>{link.label}</a></li>
             })}
           </ul>
           <a className="mobile-menu-cta" href={sectionLink('community')} tabIndex={isMobileMenuOpen ? 0 : -1} onClick={closeMobileMenu}>Join the Community <span aria-hidden="true">→</span></a>
-        </div>
+        </nav>
       </header>
 
-      {legalPage ? <LegalPage type={legalPage} /> : isShop ? <ShopPage /> : isSkinSenseWaitlist ? <SkinSenseWaitlistPage /> : <main id="main-content">
-        <section id="top" className="hero" data-animate>
-          <img className="hero-media" src={heroImage} alt="" />
-          <div className="hero-overlay" />
-          <div className="hero-content">
-            <h1>Technology that helps your business <span className="bloom-word">bloom.</span></h1>
-            <p className="hero-copy">Practical technology education and solutions for beauty professionals and small businesses.</p>
-            <div className="button-row">
-              <a className="button button-primary" href="#what-we-do">Explore Digital Bloom <span aria-hidden="true">↗</span></a>
-              <a className="button button-light" href={beautyAiSurveyUrl} target="_blank" rel="noopener noreferrer">Take the Beauty + AI Survey</a>
-            </div>
-          </div>
-        </section>
-
-        <Section
-          id="what-we-do"
-          className="what-we-do-section"
-          title="What We Do"
-          intro="Digital Bloom is a technology education and solutions company that helps beauty professionals and small businesses build digital confidence, simplify operations, and grow through practical technology."
-        >
-          <Slider items={services} label="Digital Bloom services" hideCounter renderItem={(service, index) => (
-            <article className={`service-slide service-${service.accent}`} key={service.title}>
-              <span className="slide-number">0{index + 1}</span>
-              <div className="service-art" aria-hidden="true"><span>{index === 0 ? '◌' : index === 1 ? '↗' : '✦'}</span></div>
-              <div className="service-copy">
-                <h3>{service.title}</h3>
-                <p>{service.description}</p>
+      {contactPath ? <ContactPage /> : legalPage ? <LegalPage type={legalPage} /> : servicePath ? <ServicePages slug={serviceSlug} /> : isShop ? <ServicePages /> : isSkinSenseWaitlist ? <SkinSenseWaitlistPage /> : <main id="main-content" className="lotus-home">
+        <div className="home-introduction" id="digital-support">
+          <section id="top" className="hero lotus-hero" data-animate>
+            <div className="hero-content">
+              <p className="lotus-eyebrow">DIGITAL BLOOM</p>
+              <h1>Technology<br />Should Help<br />You <span className="bloom-word">Bloom.</span></h1>
+              <p className="hero-copy">Practical digital solutions for businesses, creators, and everyday people.</p>
+              <p className="lotus-body">Whether you're building your online presence, hosting virtual events, managing a live stream, or learning to stay safe online, Digital Bloom helps you move forward with confidence.</p>
+              <p className="lotus-body">Professional support without unnecessary complexity.</p>
+              <div className="button-row">
+                <a className="button button-primary" href="/services">Explore Our Services <span aria-hidden="true">→</span></a>
+                <a className="button lotus-button-outline" href="/contact#inquiry">Get in Touch <span aria-hidden="true">→</span></a>
               </div>
-            </article>
-          )} />
-          <a className="button button-primary services-cta" href="#community">Explore Digital Bloom Services <span aria-hidden="true">→</span></a>
-        </Section>
+            </div>
+            <img className="home-lotus" src={lotusImage} alt="" width="600" height="600" fetchPriority="high" />
+          </section>
+          <nav id="what-we-do" className="home-service-strip" aria-label="Explore Digital Bloom services">
+            {serviceCatalog.map((service, index) => (
+              <a href={`/services/${service.slug}`} key={service.slug}>
+                <ServiceIcon index={index} />
+                <span>{service.title}</span>
+              </a>
+            ))}
+          </nav>
+        </div>
 
-        <section id="beauty" className="editorial-feature" data-animate>
-          <div className="feature-copy">
-            <h2>Digital Confidence for Beauty Professionals</h2>
-            <p>From hairstylists and estheticians to nail techs, barbers, makeup and lash artists, Digital Bloom is designed around the way you actually work.</p>
-            <p className="feature-description">Our upcoming program focuses on practical systems, tools, and AI habits you can use immediately.</p>
+        <section id="beauty" className="section beauty-pros-section" data-animate>
+          <div className="beauty-pros-copy">
+            <div className="section-heading">
+              <div>
+                <h2>For Beauty Pros</h2>
+                <p className="section-intro">From hairstylists and estheticians to nail techs, barbers, makeup and lash artists, Digital Bloom is designed around the way you actually work.</p>
+              </div>
+            </div>
+            <p>Our upcoming program focuses on practical systems, tools, and AI habits you can use immediately.</p>
             <a className="button button-light" href={beautyAiSurveyUrl} target="_blank" rel="noopener noreferrer">Help Shape the Program <span aria-hidden="true">↗</span></a>
           </div>
-          <div className="pain-panel">
-            <span className="panel-index">COMMON DIGITAL GROWING PAINS</span>
-            <p className="panel-intro">You are not alone if any of these sound familiar:</p>
-            <ul>{painPoints.map((item) => <li key={item}>{item}</li>)}</ul>
-            <p className="panel-close">That’s where Digital Bloom comes in.</p>
+          <div className="beauty-pros-image-frame">
+            <img src={beautyConsultationImage} alt="Beauty professional consulting with a seated client beside a laptop in a pink lotus-themed studio" width="1672" height="941" loading="lazy" decoding="async" />
           </div>
         </section>
 
         <section className="skinsense-section" data-animate>
           <div className="skinsense-visual">
-            <img className="skinsense-image" src={skinsenseImage} alt="SkinSense product showcase" />
+            <img className="skinsense-image" src={skinsenseImage} alt="SkinSense product showcase" width="1454" height="1082" loading="lazy" decoding="async" />
           </div>
           <div className="skinsense-copy">
             <h2>SkinSense</h2>
@@ -711,7 +687,7 @@ function App() {
             <div className="community-promise"><span className="promise-mark">✦</span><p>Be the first to know what’s <span className="bloom-word">blooming.</span></p><small>Thoughtful resources and practical ideas, sent occasionally.</small></div>
             {isCommunitySubmitted ? (
               <div className="community-success" role="status">
-                <h3>Welcome to the Digital Bloom community.</h3>
+                <h3>Your signup request has been sent.</h3>
                 <p>We’ll keep you updated with thoughtful resources, programs, products, events, and technology updates.</p>
               </div>
             ) : (

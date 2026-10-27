@@ -1,0 +1,124 @@
+/* Targeted polish for the existing full-site preview; launch mode stays isolated. */
+.site-header,
+.lotus-home,
+.services-page,
+.contact-page {
+  --ux-control-height: 48px;
+  --ux-control-radius: 4px;
+  --ux-focus: #ffb3cf;
+  --ux-section-space: clamp(3rem, 6vw, 5rem);
+}
+.site-header { background: rgba(8, 9, 11, .96); border-bottom: 1px solid #30232c; }
+.site-header .nav { width: min(1440px, 94vw); gap: clamp(.75rem, 1.4vw, 1.5rem); }
+.site-header .nav-links { gap: clamp(.4rem, .8vw, .9rem); align-items: center; }
+.site-header .nav-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: .5rem .2rem;
+  font-size: .76rem;
+  line-height: 1.4;
+  text-align: center;
+  border-bottom: 2px solid transparent;
+}
+.site-header .nav-links a.is-active { color: #ff9ac0; border-bottom-color: #ff6a9e; }
+.site-header .button,
+.lotus-home .button,
+.services-page .button,
+.contact-page .button {
+  min-height: var(--ux-control-height);
+  border-radius: var(--ux-control-radius);
+  line-height: 1.45;
+  padding: .85rem 1.15rem;
+  white-space: normal;
+  text-align: center;
+}
+.site-header .nav-cta { white-space: nowrap; }
+.skip-link:focus { position: fixed; z-index: 2000; top: .5rem; background: #21151e; color: #fff; outline: 3px solid #ffb3cf; }
+.site-header :is(a, button):focus-visible,
+:is(.lotus-home, .services-page, .contact-page, .site-footer) :is(a, button, input, select, textarea, summary):focus-visible {
+  outline: 3px solid #ffb3cf;
+  outline-offset: 4px;
+}
+:is(.lotus-home, .services-page, .contact-page) :is(h1, h2, h3) { text-wrap: balance; }
+:is(.lotus-home, .services-page, .contact-page) :is(p, li) { overflow-wrap: break-word; }
+.lotus-home .section { padding-block: var(--ux-section-space); }
+.lotus-overview .service-panel,
+.service-detail .package-card { border-radius: 10px; }
+.lotus-overview .service-panel h2 { line-height: 1.15; }
+.lotus-overview .service-panel > .button { margin-top: auto; }
+.service-detail .package-grid { gap: 1.25rem; }
+.service-detail .package-card > h3 { line-height: 1.25; }
+.service-detail .package-inquiry-link { min-height: 48px; display: flex; align-items: center; gap: .4rem; }
+.service-detail .package-inquiry-link span { flex-shrink: 0; }
+.service-detail .service-faq summary { min-height: 44px; align-content: center; }
+.lotus-overview .health-highlight { line-height: 1.65; }
+.lotus-home .home-service-strip a { min-height: 48px; }
+.lotus-home .home-lotus { opacity: .75; }
+.detail-creators .detail-lotus { opacity: .16; }
+.lotus-home .skinsense-section .skinsense-visual { min-height: 0; }
+.lotus-home .skinsense-section .skinsense-image { height: auto; min-height: 0; aspect-ratio: 1454 / 1082; object-fit: contain; }
+.lotus-home .community-form :is(input:not([type='checkbox']), select) { min-height: 48px; font-size: 1rem; border-radius: 4px; border-color: #72606b; }
+.lotus-home .community-form label { font-size: .9rem; }
+.lotus-home .community-form :is(input[type='checkbox']) { accent-color: #e83e5b; }
+.lotus-home .form-note { font-size: .85rem; line-height: 1.6; }
+.contact-connect a { display: inline-block; padding-block: .5rem; min-height: 44px; }
+.site-footer a { display: inline-block; padding-block: .5rem; }
+@media (max-width: 1200px) {
+  .site-header .nav { width: 100%; min-height: 4.75rem; padding-inline: 5vw; }
+  .site-header .mobile-menu-toggle { width: 48px; height: 48px; border-radius: 4px; }
+  .site-header .mobile-menu {
+    padding: 6.5rem max(6vw, 1.25rem) max(1.5rem, env(safe-area-inset-bottom));
+    gap: 2rem;
+    overscroll-behavior: contain;
+  }
+  .site-header .mobile-menu ul { gap: .35rem; }
+  .site-header .mobile-menu li a {
+    min-height: 48px;
+    padding: .5rem .75rem;
+    font-size: clamp(1.05rem, 3.8vw, 1.45rem);
+    line-height: 1.4;
+    white-space: normal;
+    border-left: 2px solid transparent;
+  }
+  .site-header .mobile-menu li a.is-active { border-left-color: #ff72a1; color: #ffb3cf; background: #21151e; }
+  .site-header .mobile-menu-cta { margin-top: auto; min-height: 48px; font-size: 1rem; text-align: center; white-space: normal; flex-shrink: 0; border-radius: 4px; }
+}
+@media (max-width: 650px) {
+  .lotus-home .lotus-hero h1 { line-height: 1.08; }
+  .lotus-home .section-heading h2 { font-size: clamp(2.3rem, 9vw, 3rem); line-height: 1.08; }
+  .service-detail .package-card { padding: 1.4rem; }
+  .service-detail .package-card p:not(.package-price) { line-height: 1.65; }
+  .service-detail .package-card .package-availability { color: #ffe0eb; margin-bottom: .85rem; }
+  .service-detail .package-card .package-checkout-note { font-size: .85rem; }
+  .lotus-home .skinsense-section .skinsense-copy { padding: 3rem 6vw; }
+  .lotus-home .skinsense-section .skinsense-copy h2 { font-size: clamp(3rem, 14vw, 4.5rem); line-height: 1.05; }
+  .lotus-home .community { padding: 2rem 1.25rem; }
+  .lotus-home .community-inner { gap: 2rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .site-header,
+  .site-header .mobile-menu,
+  :is(.lotus-home, .services-page, .contact-page) [data-animate],
+  :is(.lotus-home, .services-page, .contact-page) .button { animation: none; transition: none; }
+  :is(.lotus-home, .services-page, .contact-page) .button:hover,
+  :is(.lotus-home, .services-page, .contact-page) .button:focus-visible { transform: none; }
+}
+
+/* White CTA labels retain contrast across the entire pink gradient. */
+.site-header .button-primary,
+.site-header.is-scrolled .button-primary,
+.lotus-home .button-primary,
+.services-page .button-primary,
+.contact-page .button-primary {
+  color: #fff;
+  background: linear-gradient(120deg, #d51f63, #bf174e);
+}
+.site-header .button-primary:hover,
+.lotus-home .button-primary:hover,
+.services-page .button-primary:hover,
+.contact-page .button-primary:hover { background: #b5174e; }
+@media (max-width: 1200px) {
+  .site-header .mobile-menu-cta { background: #d51f63; }
+}

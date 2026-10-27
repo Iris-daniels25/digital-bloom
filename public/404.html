@@ -4,9 +4,11 @@
     <meta charset="utf-8" />
     <title>Digital Bloom</title>
     <script>
-      const path = window.location.pathname
-      if (path === '/privacy' || path === '/terms') {
-        window.location.replace(`/?route=${encodeURIComponent(path)}`)
+      const path = window.location.pathname.replace(/\/$/, '') || '/'
+      const routes = ['/privacy', '/terms', '/contact', '/services', '/services/website-design-development', '/services/virtual-meeting-webinar-support', '/services/creator-streamer-support', '/services/senior-digital-safety-academy']
+      if (routes.includes(path)) {
+        const route = `${path}${window.location.search}${window.location.hash}`
+        window.location.replace(`/?route=${encodeURIComponent(route)}`)
       }
     </script>
   </head>

@@ -1,0 +1,14 @@
+.package-payment { width: 100%; margin-top: auto; padding-top: .75rem; }
+.service-detail .package-card .package-availability {
+  color: #ffe0eb;
+  font-size: .9rem;
+  line-height: 1.5;
+  margin: 0 0 .75rem;
+  padding-left: .75rem;
+  border-left: 2px solid #ff72a1;
+}
+.package-payment .package-pay-now { width: 100%; min-height: 48px; white-space: normal; text-align: center; }
+.package-payment .package-pay-now:disabled { color: #c5b7bf; border: 1px solid #69515e; background: #282129; cursor: not-allowed; transform: none; }
+.service-detail .package-card .package-checkout-note { font-size: .8rem; line-height: 1.5; color: #c8bdc4; margin: .65rem 0 1rem; }
+.service-detail .package-card .package-payment + .text-link { margin-top: 0; }
+.package-pay-now:focus-visible { outline: 3px solid #ffb3cf; outline-offset: 4px; }

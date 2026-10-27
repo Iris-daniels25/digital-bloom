@@ -1,0 +1,235 @@
+/* The first two panels of the approved collage. Detail pages keep their styles. */
+.lotus-home,
+.lotus-overview {
+  --lotus-pink: #ff2874;
+  --color-accent: #ff2874;
+  background: #08090b;
+}
+.lotus-home .button-primary,
+.lotus-overview .button-primary {
+  background: linear-gradient(135deg, #ff397d, #ed1a65);
+  border-radius: 4px;
+  color: #fff;
+}
+.lotus-home .button-primary:hover,
+.lotus-overview .button-primary:hover { background: #d81859; }
+.lotus-eyebrow,
+.lotus-overview .service-eyebrow {
+  color: #ff65a0;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+.home-introduction {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 85% 40%, #2b0c20 0, #100b11 35%, #08090b 70%);
+  border-bottom: 1px solid #452332;
+}
+.lotus-home .lotus-hero {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, .85fr);
+  min-height: 660px;
+  padding: 9rem max(5vw, calc((100vw - 1200px)/2)) 3rem;
+  gap: 0;
+  background: transparent;
+  overflow: visible;
+}
+.lotus-hero .hero-content { z-index: 1; max-width: 590px; }
+.lotus-home .lotus-hero h1 {
+  margin: .9rem 0 1.5rem;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(3.4rem, 5.9vw, 6rem);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -.045em;
+}
+.lotus-home .lotus-hero h1 .bloom-word { color: #ff2874; font-weight: 400; }
+.lotus-hero .hero-copy { font-size: clamp(1.1rem, 1.7vw, 1.45rem); line-height: 1.5; max-width: 34ch; }
+.lotus-body { max-width: 49ch; font-size: .97rem; color: #d9d6da; }
+.lotus-hero .button-row { margin-top: 1.4rem; }
+.lotus-button-outline { color: #ff8ab5; background: #0c0b0e; border: 1px solid #a72c57; border-radius: 4px; }
+.lotus-button-outline:hover { background: #2c1320; }
+.home-lotus {
+  position: absolute;
+  z-index: -1;
+  width: min(65vw, 850px);
+  height: auto;
+  right: -12%;
+  top: 10%;
+  mix-blend-mode: lighten;
+  opacity: .9;
+  object-fit: contain;
+  pointer-events: none;
+  transform: rotate(-14deg);
+  mask-image: radial-gradient(ellipse, #000 40%, transparent 72%);
+}
+.home-service-strip {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.5rem;
+  max-width: 1200px;
+  width: 90%;
+  margin: 0 auto;
+  padding: 2.5rem 0 3.5rem;
+  scroll-margin-top: 6rem;
+}
+.home-service-strip a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: .5rem;
+  text-decoration: none;
+  color: #f9f3f6;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: .75rem;
+  font-weight: 650;
+  letter-spacing: .025em;
+}
+.home-service-strip svg { color: #ff5291; }
+.home-service-strip span { max-width: 22ch; }
+.home-service-strip a:hover { color: #ff8ab5; }
+.home-service-strip a:focus-visible { outline: 2px solid #ff65a0; outline-offset: 4px; }
+.lotus-home #beauty { scroll-margin-top: 6rem; }
+.lotus-home #beauty h2,
+.lotus-home .skinsense-copy h2,
+.lotus-home #community h2 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 500;
+  letter-spacing: -.035em;
+}
+.lotus-overview { padding-top: 7rem; }
+.lotus-overview .services-container { position: relative; isolation: isolate; max-width: 1200px; }
+.overview-lotus {
+  position: absolute;
+  z-index: -1;
+  right: -3%;
+  top: -3rem;
+  width: min(50vw, 540px);
+  height: auto;
+  mix-blend-mode: lighten;
+  opacity: .55;
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse, #000 32%, transparent 70%);
+}
+.lotus-overview .service-hero { padding: 2.5rem 0 1.5rem; max-width: 720px; }
+.lotus-overview .service-hero h1 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(2.8rem, 4.9vw, 4.6rem);
+  font-weight: 500;
+  letter-spacing: -.035em;
+  line-height: 1.04;
+}
+.lotus-overview .service-lead { color: #eee9ed; font-size: 1.15rem; }
+.lotus-overview .service-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
+.lotus-overview .service-panel {
+  padding: 0 0 1.4rem;
+  gap: 0;
+  border: 1px solid #42232f;
+  border-radius: 9px;
+  background: linear-gradient(155deg, #151014, #09090b);
+  overflow: hidden;
+}
+.lotus-overview .service-panel .service-image-frame {
+  border: 0;
+  border-radius: 0;
+  margin: 0 0 1.25rem;
+  aspect-ratio: 1.48;
+  max-width: none;
+  background: #0a090b;
+  box-shadow: none;
+}
+.lotus-overview .service-panel .service-image-frame img { max-height: 100%; object-fit: contain; }
+.lotus-overview .service-panel h2 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 500;
+  font-size: clamp(1.5rem, 2.3vw, 2rem);
+  letter-spacing: -.025em;
+  margin: 0 1.4rem 1rem;
+}
+.lotus-overview .service-panel p { margin: 0 1.4rem 1.3rem; font-size: .95rem; }
+.lotus-overview .service-panel > .button { margin: auto 1.4rem 0; min-height: 42px; }
+.lotus-overview .academy-feature-banner {
+  position: relative;
+  isolation: isolate;
+  display: block;
+  overflow: hidden;
+  min-height: 300px;
+  padding: 2.25rem;
+  margin: 1.5rem 0;
+  border-radius: 9px;
+  border: 1px solid #85405c;
+  background: #110d10;
+}
+.academy-feature-banner .academy-feature-copy { position: relative; z-index: 2; width: 49%; }
+.lotus-overview .academy-feature-banner h2 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 500;
+  line-height: 1.06;
+  letter-spacing: -.035em;
+  max-width: none;
+}
+.academy-feature-banner .service-eyebrow { font-size: .65rem; }
+.academy-feature-banner .academy-feature-copy > p:not(.service-eyebrow) { max-width: 37ch; color: #ddd7db; }
+.academy-banner-photo { position: absolute; inset: 0 0 0 auto; width: 75%; height: 100%; object-fit: cover; object-position: 65% center; }
+.academy-feature-banner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(90deg, #110d10 10%, rgba(17,13,16,.96) 31%, rgba(17,13,16,.5) 48%, transparent 70%);
+  pointer-events: none;
+}
+.lotus-overview .overview-health { margin: 0 0 3rem; border-radius: 4px; text-decoration: none; }
+.lotus-overview .overview-health:hover { border-color: #ff65a0; background: #301720; }
+.lotus-overview .inquiry-section { margin-top: 3rem; }
+.lotus-overview .inquiry-section > h2 { font-family: Georgia, 'Times New Roman', serif; font-weight: 500; }
+@media (max-width: 800px) {
+  .lotus-home .lotus-hero { padding-top: 8rem; min-height: auto; grid-template-columns: 1fr; }
+  .lotus-hero .hero-content { max-width: 540px; }
+  .home-lotus { width: 700px; max-width: none; right: -470px; top: 10%; opacity: .3; }
+  .home-service-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem .5rem; }
+  .lotus-overview .service-grid { grid-template-columns: 1fr; max-width: 550px; margin: auto; }
+  .lotus-overview .service-panel .service-image-frame { aspect-ratio: auto; }
+  .lotus-overview .academy-feature-banner { padding: 0; }
+  .academy-feature-banner .academy-feature-copy { width: auto; padding: 1.5rem; }
+  .academy-banner-photo { position: relative; display: block; width: 100%; height: auto; object-fit: contain; }
+  .academy-feature-banner::after { display: none; }
+  .overview-lotus { width: 65vw; right: 0; top: 0; opacity: .25; }
+}
+
+/* Consultation artwork is confined to the existing For Beauty Pros section. */
+.lotus-home .beauty-pros-section {
+  display: grid;
+  grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: clamp(2rem, 4vw, 4rem);
+}
+.beauty-pros-copy { min-width: 0; }
+.beauty-pros-copy .section-heading { margin-bottom: 1.25rem; }
+.beauty-pros-copy > p { color: var(--color-text-muted); }
+.beauty-pros-image-frame {
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 101, 160, .35);
+  background: #160f15;
+  box-shadow: 0 14px 40px rgba(255, 40, 116, .09);
+}
+.beauty-pros-image-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  object-position: center center;
+}
+@media (max-width: 800px) {
+  .lotus-home .beauty-pros-section { grid-template-columns: minmax(0, 1fr); }
+}
