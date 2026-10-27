@@ -35,6 +35,7 @@
 .inquiry-form .button { justify-self: start; min-height: 48px; text-align: center; white-space: normal; }
 .shared-inquiry .button-primary { color: #fff; background: linear-gradient(120deg, #ff347b, #e91d63); border: 1px solid #ff5a92; border-radius: 4px; }
 .shared-inquiry .button-primary:hover { background: #cf1857; }
+.shared-inquiry .button-primary:disabled { opacity: .65; cursor: default; }
 .inquiry-form .inquiry-privacy { color: #cbc1c8; font-size: .85rem; margin: 0; }
 .shared-inquiry a { color: #ffb3cf; overflow-wrap: anywhere; }
 .shared-inquiry a:focus-visible,

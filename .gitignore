@@ -11,6 +11,12 @@ node_modules
 dist
 dist-ssr
 *.local
+playwright-report/
+test-results/
+.env
+.env.*
+!.env.example
+npm-audit-report.json
 
 # Editor directories and files
 .vscode/*

@@ -1,5 +1,34 @@
 # Digital Bloom
 
+## Contact and service inquiries
+
+The shared Contact/service inquiry form posts to Formspree. The public endpoint
+`VITE_FORMSPREE_ENDPOINT=https://formspree.io/f/xjyywkkn` is provided in `.env.example`;
+copy it to a local `.env` before starting development. The endpoint is also
+explicitly set in the Pages build workflow. No secret or
+production settings change is required. Restart Vite after changing an environment
+value; Vite embeds this value at build time. Keep private credentials out of `VITE_*`.
+
+To perform one real test after approval, run `npm run dev`, open
+`http://localhost:5173/contact?preview=full`, and enter your own name/email plus a
+message clearly marked “Development test — no service requested.” Optionally
+select Phone and supply your own phone number to check that conditional field.
+Click **Send Inquiry** once, wait for the confirmation, and verify the entry and
+all submitted fields in the Formspree dashboard/notification inbox. A displayed
+success confirms API acceptance, not inbox delivery. If a network error occurs,
+check Formspree before retrying to avoid a duplicate after an ambiguous response.
+To check package context, enter the form through a service/package inquiry link
+in the same development preview. Do not submit any payment or booking.
+
+The full preview works only with `npm run dev`, not `npm run preview`. Keep
+`COMING_SOON_ENABLED = true`; no deployment is needed to test locally. Automated
+tests mock inquiry requests and never send real inquiries. The full website audit
+remains deferred.
+
+Run `npm test` for the mocked Chromium tests. On a fresh machine, first run
+`npm ci` and `npx playwright install chromium` (or `npx playwright install --with-deps chromium`
+if browser system dependencies are missing).
+
 Digital Bloom is a technology education and solutions company that helps beauty professionals and small businesses build digital confidence, simplify operations, and grow through practical technology.
 
 This repository contains the public-facing Digital Bloom website, including the main landing page, Digital Bloom Shop, SkinSense waitlist experience, product and service integrations, and supporting legal pages.
